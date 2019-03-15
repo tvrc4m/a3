@@ -2,7 +2,7 @@
     <el-container class="app-container">
         <el-container>
             <el-header :style="{padding: 0}" height="64px">
-                <global-header :logo="logo" :current-user="currentUser" @menu-click="handleMenuClick" @lang-click="handleLangClick"></global-header>
+                <global-header></global-header>
             </el-header>
             <el-row :span="24">
                 <el-col :span="4">
@@ -18,7 +18,6 @@
                     </el-main>
                 </el-col>
             </el-row>
-            
         </el-container>
     </el-container>
 </template>
@@ -31,15 +30,6 @@
     import sidebar from '@/components/global/sidebar.vue'
     import AntIcon from '@/components/common/anticon'
 
-    const footerLinks = [
-        {
-            key: 'github',
-            titleSlot: 'github-slot',
-            href: 'https://github.com/qidaizhe11/element-pro',
-            blankTarget: true
-        }
-    ]
-
     @Component({
         components:{
             GlobalHeader,
@@ -49,8 +39,7 @@
     })
     export default class LayoutBasic extends Vue{
 
-        @Provide() logo:String='@/assets/logo.png'
-        @Provide() footerLinks=footerLinks
+        
         @Provide() breadcrumbNameMap=[]
 
         get currentUser():String{
@@ -70,48 +59,14 @@
         handleLangClick(command:string){
            
         }
-
-        mounted(){
-           
-        }
     }
 </script>
 
 <style lang="scss" scoped>
-    @import '~theme/theme.scss';
-
     .app-container {
         position: relative;
-        height: 100%;
+        height: 100vw;
         background: $layout-body-background;
     }
+</style>
 
-    .github-icon {
-        font-size: 20px;
-    }
-</style>
-<style lang="scss">
-    .card-header{
-        height: 40px;
-        line-height: 40px;
-        margin-bottom:20px;
-        border-bottom:1px solid #f2f2f2;
-        .title{
-            font-size:16px;
-            font-weight: bold;
-        }
-        .actions{
-            font-size:12px;
-            float: right;
-            display:inline-block;
-            .el-button--text{
-                padding: 3px 0;
-            }
-        }
-    }
-    .pagination{
-        margin:20px 0;
-        width:100%;
-        text-align:center;
-    }
-</style>

@@ -29,7 +29,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '~theme/theme.scss';
+    @import '~sass/theme.scss';
 
     .global-footer {
         padding: 0 16px;

@@ -7,15 +7,16 @@ import router from '@/router'
 import store from '@/store'
 
 import '@/router/authority'
+import '@/sass/element-theme.scss';
+import '@/sass/anticon.scss'
+import '@/sass/main.scss'
 
-import '@/theme/element-theme.scss';
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 Vue.config.errorHandler=function(err,vm,info){
     console.log(err,vm,info)
 }
-console.log(ElementUI)
-Vue.use(ElementUI)
 
 new Vue({
     el: '#app',

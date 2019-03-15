@@ -77,7 +77,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '~theme/theme.scss';
+    @import '~sass/theme.scss';
 
     .main {
         width: 368px;

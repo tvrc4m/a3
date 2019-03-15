@@ -27,7 +27,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '~theme/theme.scss';
+    @import '~sass/theme.scss';
 
     .container {
         margin: 24px 24px 0;

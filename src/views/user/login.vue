@@ -2,10 +2,7 @@
     <div @keyup.enter="userLogin" class="main">
         <el-form class="login">
             <el-tabs class="tabs" v-model="type">
-                <el-tab-pane name="account" label="账号密码登录">
-                    <!-- <template v-if="login && login.status === 'error' && login.type === 'account' && !submitting"> -->
-                        <!-- <el-alert :style="{marginBottom: '24px'}"  :title="message"  type="error" show-icon /> -->
-                    <!-- </template> -->
+                <el-tab-pane name="account" label="凤凰之家综合运营管理平台">
                     <el-form-item>
                         <el-input v-model="form.nick" prefix-icon="anticon anticon-user" placeholder="用户名"></el-input>
                     </el-form-item>
@@ -78,8 +75,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '~theme/theme.scss';
-
     .main {
         width: 368px;
         margin: 0 auto;

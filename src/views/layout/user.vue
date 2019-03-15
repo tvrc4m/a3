@@ -15,8 +15,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '~theme/theme.scss';
-
     .container {
         display: flex;
         flex-direction: column;

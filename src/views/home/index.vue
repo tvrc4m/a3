@@ -19,10 +19,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
-    @import '~theme/theme.scss';
-</style>
-<style lang="css">
+<style scoped lang="css">
     .ram-calc .ram-input{
         width: 80px !important;
         display: inline-block;

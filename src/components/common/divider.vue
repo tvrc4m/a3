@@ -17,7 +17,7 @@
 </script>
 
 <style lang="scss">
-@import '~theme/theme.scss';
+@import '@/sass/theme.scss';
 
 .divider {
   font-family: $font-family;
