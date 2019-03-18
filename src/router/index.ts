@@ -12,6 +12,10 @@ const login=()=>import('@/views/user/login')
 const UserList=()=>import('@/views/user/index')
 const UserForm=()=>import('@/views/user/form')
 
+// 后台用户
+const AdminList=()=>import('@/views/admin/index')
+const AdminForm=()=>import('@/views/admin/form')
+
 const routes = [
     {
         path: '/',
@@ -53,6 +57,27 @@ const routes = [
             {
                 path:"login",
                 component:login
+            },
+        ]
+    },
+    {
+        path: '/admin',
+        component: LayoutBasic,
+        children: [
+            {
+                path:"",
+                name:"adminList",
+                component:AdminList
+            },
+            {
+                path:"add",
+                name:"adminAdd",
+                component:AdminForm
+            },
+            {
+                path:"edit/:id",
+                name:"adminEdit",
+                component:AdminForm
             },
         ]
     }

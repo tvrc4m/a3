@@ -2,24 +2,17 @@
     <el-container>
         <el-card style="width: 100%">
             <div class="header" slot="header">
-                <span class="title">用户列表</span>
+                <span class="title">后台账户列表</span>
                 <div class="actions">
-                    <el-button type="primary" size="small" @click="goUserAdd">新增账户</el-button>
+                    <el-button type="primary" size="small" @click="goUserAdd">新增后台账户</el-button>
                 </div>
             </div>
             <el-table :data="users" :fit="true" :stripe="true">
-                <el-table-column prop="id" label="UID" width="100px" align="center" :sortable="true"></el-table-column>
-                <el-table-column prop="phone" label="手机号" width="160px" align="center"></el-table-column>
-                <el-table-column label="创建时间" align="center" width="180px">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.create_time}}</span>
-                    </template>
-                </el-table-column>
+                <el-table-column v-for="column in columns" :prop="column.name" :label="column.label" :width="column.width" align="center" :sortable="column.sort"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
                         [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
                         [<el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>] 
-                        [<el-button type="text" size="mini" @click="subscribe(scope.row.id)">订阅作者</el-button>]
                     </template>
                 </el-table-column>
             </el-table>
@@ -35,34 +28,70 @@
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
 
-    import { getUsers,delUser,TypeUser } from '@/api/user'
+    import { getAdminUsers,delAdminUser } from '@/api/admin'
 
     @Component({})
     export default class UserIndex extends Vue{
 
-       @Provide() users:Array<TypeUser>=[]
+       @Provide() users=[]
        @Provide() total=0
        @Provide() pageSize=20
+       @Provide() columns=[
+            {
+                label:"ID",
+                name:"id",
+                width:"60px",
+                sort:true
+            },
+            {
+                label:"用户名",
+                name:"username",
+            },
+            {
+                label:"昵称",
+                name:"nickname",
+            },
+            {
+                label:"角色",
+                name:"rule",
+            },
+            {
+                label:"创建时间",
+                name:"createtime",
+            },
+            {
+                label:"最后登录时间",
+                name:"logintime",
+            },
+            {
+                label:"最后登录IP",
+                name:"loginip",
+            },
+            {
+                label:"登录次数",
+                name:"logins",
+            },
+       ];
 
        goUserAdd(){
-            this.$router.push("/user/add")
+            this.$router.push("/admin/add")
        }
 
-       edit(uid:any){
-            this.$router.push({name:"userEdit",params:{uid:uid}})
+       edit(id:any){
+            this.$router.push({name:"adminEdit",params:{id:id}})
        }
 
-       del(uid:any){
+       del(id:any){
             this.$confirm("是否确定要删除该用户","提示",{
                 showCancelButton:true
             }).then(()=>{
-                delUser(uid).then(data=>{
+                delAdminUser(id).then(data=>{
                     this.$message({
                         type:"success",
                         message:"删除成功"
                     })
                     this.users=this.users.filter(item=>{
-                        if(item.id!=uid){
+                        if(item.id!=id){
                             return true
                         }
                     })
@@ -81,9 +110,10 @@
        }
 
        listUsers(page=1){
-            getUsers({page}).then(data=>{
-                this.users=data.data.users
+            getAdminUsers(page).then(data=>{
+                this.users=data.data.data
                 this.total=data.data.total
+                this.pageSize=data.data.size
             })
        }
 

@@ -4,7 +4,7 @@
             <el-tabs class="tabs" v-model="type">
                 <el-tab-pane name="account" label="凤凰之家综合运营管理平台">
                     <el-form-item>
-                        <el-input v-model="form.nick" prefix-icon="anticon anticon-user" placeholder="用户名"></el-input>
+                        <el-input v-model="form.username" prefix-icon="anticon anticon-user" placeholder="用户名"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-input v-model="form.password" prefix-icon="anticon anticon-lock" type="password" placeholder="密码"></el-input>
@@ -33,7 +33,7 @@
                 autoLogin: true,
                 submitting: false,
                 form:{
-                    nick:'',
+                    username:'',
                     password:'',
                 }
             }
@@ -45,7 +45,7 @@
         },
         methods: {
             userLogin() {
-                    if(!this.form.nick){
+                    if(!this.form.username){
                         this.$message({
                             type:"error",
                             message:"请输入昵称"
@@ -60,7 +60,7 @@
                         return false
                     }
                     this.submitting = true
-                    login(this.form.nick,this.form.password).then(data=>{
+                    login(this.form.username,this.form.password).then(data=>{
                         localStorage.setItem("token",data.data.token)
                         this.$router.push("/users")
                     }).catch(err=>{

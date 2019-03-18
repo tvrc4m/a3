@@ -1,22 +1,22 @@
 <template>
-    <div class="form-container">
-        <div class="card-header" slot="header">
-            <span class="title" style="font-size:16px;font-weight: bold;">{{btnname}}用户</span>
-            <div class="actions">
+    <el-container>
+        <el-card>
+            <div class="header" slot="header">
+                <span class="title">新增用户</span>
             </div>
-        </div>
-        <el-form ref="user" :model="user" label-width="100px" :inline="true">
-            <el-form-item label="手机号" prop="phone" style="display: block;">
-                <el-input type="text" v-model="user.phone" autocomplete="off" style="width: 260px;"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="password" style="display: block;">
-                <el-input type="text" v-model="user.password" autocomplete="off" style="width: 260px;"></el-input>
-            </el-form-item>
-            <div style="margin-left: 150px;">
-                <el-button type="primary" size="small" @click="add">{{btnname}}</el-button>
-            </div>
-        </el-form>
-    </div>
+            <el-form ref="user" :model="user" label-width="100px" :inline="true">
+                <el-form-item label="手机号" prop="phone" style="display: block;">
+                    <el-input type="text" v-model="user.phone" autocomplete="off" style="width: 260px;"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password" style="display: block;">
+                    <el-input type="text" v-model="user.password" autocomplete="off" style="width: 260px;"></el-input>
+                </el-form-item>
+                <div style="margin-left: 150px;">
+                    <el-button type="primary" size="small" @click="add">{{btnname}}</el-button>
+                </div>
+            </el-form>
+        </el-card>
+    </el-container>
 </template>
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'

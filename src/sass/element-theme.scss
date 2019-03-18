@@ -19,7 +19,21 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .ep-list-empty-text{
     text-align:center;
 }
-
-body{
-    margin:0;
+.el-card{
+    width: 100%;
+}
+.el-card__body{
+    padding: 10px;
+}
+.el-table th{
+    background-color: $background-color-light;
+}
+.el-table td{
+    padding: 8px 0;
+}
+.el-main{
+    padding: 2px;
+}
+.el-pagination{
+    margin-top: 10px;
 }

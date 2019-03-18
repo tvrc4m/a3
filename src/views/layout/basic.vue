@@ -10,11 +10,10 @@
                 </el-col>
                 <el-col :span="20">
                     <el-main :style="{'padding-bottom': 0}">
-                        <el-card class="box-card">
-                            <router-view :breadcrumbNameMap="breadcrumbNameMap">
-                                <div slot="header"></div>    
-                            </router-view>
+                        <el-card v-if="showBreadcrumb">
+                            <breadcrumb :links="breadcrumbNameMap"></breadcrumb>
                         </el-card>
+                        <router-view></router-view>
                     </el-main>
                 </el-col>
             </el-row>
@@ -23,24 +22,32 @@
 </template>
 
 <script lang="ts">
-    import { Component,Provide,Vue } from 'vue-property-decorator'
+    import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
+    import { mapState } from 'vuex'
 
 
     import GlobalHeader from '@/components/global/header.vue'
     import sidebar from '@/components/global/sidebar.vue'
     import AntIcon from '@/components/common/anticon'
+    import breadcrumb from '@/components/common/breadcrumb'
 
     @Component({
         components:{
             GlobalHeader,
             sidebar,
-            AntIcon
-        }
+            AntIcon,
+            breadcrumb
+        },
     })
     export default class LayoutBasic extends Vue{
 
-        
-        @Provide() breadcrumbNameMap=[]
+        get breadcrumbNameMap(){
+            return this.$store.state.breadcrumbs
+        }
+
+        get showBreadcrumb(){
+            return this.$store.state.showBreadcrumb
+        }
 
         get currentUser():String{
             return 't.wei'
@@ -56,8 +63,9 @@
             }
         }
 
-        handleLangClick(command:string){
-           
+        @Watch("$route.name")
+        changeRoute(val){
+            this.$store.commit("setBreadcrumb",[])
         }
     }
 </script>
