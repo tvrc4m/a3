@@ -5,6 +5,7 @@ import 'moment/locale/zh-cn'
 import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
+require("./filters")
 
 import '@/router/authority'
 import '@/sass/element-theme.scss';

@@ -15,6 +15,15 @@ const UserForm=()=>import('@/views/user/form')
 // 后台用户
 const AdminList=()=>import('@/views/admin/index')
 const AdminForm=()=>import('@/views/admin/form')
+// 后台角色
+const AdminRuleList=()=>import('@/views/rule/index')
+const AdminRuleForm=()=>import('@/views/rule/form')
+// 企业
+const CompanyList=()=>import('@/views/company/index')
+const CompanyForm=()=>import('@/views/company/form')
+
+const companyTypeList=()=>import('@/views/company/type/index')
+const companyTypeForm=()=>import('@/views/company/type/form')
 
 const routes = [
     {
@@ -78,6 +87,63 @@ const routes = [
                 path:"edit/:id",
                 name:"adminEdit",
                 component:AdminForm
+            },
+        ]
+    },
+    {
+        path: '/admin/rule',
+        component: LayoutBasic,
+        children: [
+            {
+                path:"",
+                name:"adminRule",
+                component:AdminRuleList
+            },
+            {
+                path:"add",
+                name:"adminRuleAdd",
+                component:AdminRuleForm
+            },
+            {
+                path:"edit/:id",
+                name:"adminRuleEdit",
+                component:AdminRuleForm
+            }
+        ]
+    },
+    {
+        path: '/company',
+        component: LayoutBasic,
+        children: [
+            {
+                path:"",
+                name:"companyList",
+                component:CompanyList
+            },
+            {
+                path:"add",
+                name:"companyAdd",
+                component:CompanyForm
+            },
+            {
+                path:"edit/:id",
+                name:"companyEdit",
+                component:CompanyForm
+            },
+            {
+                path:"type",
+                name:"companyTypeList",
+                component:companyTypeList
+            },
+            {
+                path:"type/add",
+                name:"companyTypeAdd",
+                component:companyTypeForm
+            },
+            {
+                path:"type/edit/:id",
+                name:"companyTypeEdit",
+                component:companyTypeForm
             },
         ]
     }

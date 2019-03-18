@@ -8,7 +8,7 @@
             <el-submenu :index="'index_'+index" v-else>
                 <template slot="title">
                     <i  :class="'el-icon-'+menu.icon"></i>
-                    <span>后台账户</span>
+                    <span>{{menu.title}}</span>
                 </template>
                 <el-menu-item v-for="(submenu,subindex) in menu.submenus" :route="{path:submenu.path}" :index="index+'_'+subindex">{{submenu.title}}</el-menu-item>
             </el-submenu>
@@ -42,6 +42,24 @@
                     {
                         title:"权限设置",
                         path:"/admin/rule/setting"
+                    }
+                ]
+            },
+            {
+                title:"企业管理",
+                icon:"menu",
+                submenus:[
+                    {
+                        title:"企业列表",
+                        path:"/company"
+                    },
+                    {
+                        title:"企业类型",
+                        path:"/company/type"
+                    },
+                    {
+                        title:"企业服务",
+                        path:"/company/service"
                     }
                 ]
             }

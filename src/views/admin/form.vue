@@ -6,18 +6,18 @@
             </div>
             <el-form ref="user" :model="user" label-width="100px" :inline="true">
                 <el-form-item label="角色" prop="rule_id" style="display: block;">
-                    <el-select v-model="user.rule_id" placeholder="请选择">
+                    <el-select v-model="user.rule_id" placeholder="请选择角色">
                         <el-option v-for="rule in rules" :key="rule.id" :label="rule.name" :value="rule.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="用户名" prop="username" style="display: block;">
-                    <el-input type="text" v-model="user.username" autocomplete="off" style="width: 260px;"></el-input>
+                    <el-input type="text" v-model="user.username" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="昵称" prop="nickname" style="display: block;">
-                    <el-input type="text" v-model="user.nickname" autocomplete="off" style="width: 260px;"></el-input>
+                    <el-input type="text" v-model="user.nickname" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password" style="display: block;">
-                    <el-input type="text" v-model="user.password" autocomplete="off" style="width: 260px;"></el-input>
+                    <el-input type="text" v-model="user.password" autocomplete="off"></el-input>
                 </el-form-item>
                 <div style="margin-left: 150px;">
                     <el-button type="primary" size="small" @click="add">{{btnname}}</el-button>
@@ -27,9 +27,9 @@
     </el-container>
 </template>
 <script lang="ts">
-    import { Component,Provide,Vue } from 'vue-property-decorator'
+    import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
     import { getAdminUser,editAdminUser,addAdminUser } from '@/api/admin'
-    import { getRules } from '@/api/rule'
+    import { getAllRules } from '@/api/rule'
     import { mapMutations } from 'vuex'
 
     @Component({
@@ -42,7 +42,7 @@
             username:"",
             nickname:"",
             password:"",
-            rule_id:0
+            rule_id:null
         }
         @Provide() rule_id:Number=0
         @Provide() rules:Array<{id:Number,name:String}>=[]
@@ -68,7 +68,7 @@
         mounted(){
             if(this.$route.params.id){
                 this.is_add=false
-                getRules().then(data=>{
+                getAllRules().then(data=>{
                     this.rules=data.data
                 })
                 getAdminUser(parseInt(this.$route.params.id)).then(data=>{
@@ -76,7 +76,7 @@
                 })
             }else{
                 this.is_add=true
-                getRules().then(data=>{
+                getAllRules().then(data=>{
                     this.rules=data.data
                 })
             }
