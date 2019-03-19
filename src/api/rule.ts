@@ -28,10 +28,19 @@ export function editRule(rule){
     return req.put(`${process.env.API_URL}/admin/rule/${rule.id}`,{
         id:rule.id,
         name:rule.name,
-        remark:rule.remark
+        remark:rule.remark,
+        paths:rule.paths
     })
 }
 
 export function delRule(rule_id){
     return req.delete(`${process.env.API_URL}/admin/rule/${rule_id}`)
+}
+
+export function getPaths(){
+    return req.get(`${process.env.API_URL}/admin/rule/paths`)
+}
+
+export function getRulePermissions(rule_id){
+
 }

@@ -17,7 +17,7 @@
 </template>
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
-    
+    import { getAllServices } from '@/api/service'
     @Component({})
     export default class Sidebar extends Vue{
 
@@ -38,12 +38,14 @@
                     {
                         title:"角色列表",
                         path:"/admin/rule"
-                    },
-                    {
-                        title:"权限设置",
-                        path:"/admin/rule/setting"
                     }
                 ]
+            },
+            {
+                title:"服务列表",
+                path:"/service",
+                icon:"menu",
+                submenus:[]
             },
             {
                 title:"企业管理",
@@ -64,5 +66,24 @@
                 ]
             }
         ]
+
+        @Provide() services=[]
+
+        mounted(){
+            getAllServices().then(data=>{
+                this.services=data.data
+                this.menus.forEach((item,index)=>{
+                    if(item.title=="服务列表"){
+                        let submenus=data.data.map(item=>{
+                            return {
+                                'title':item.name,
+                                "path":"service/"+item.id
+                            }
+                        })
+                        this.$set(this.menus[index],"submenus",submenus)
+                    }
+                })
+            })
+        }
     }
 </script>

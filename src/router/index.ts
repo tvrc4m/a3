@@ -21,6 +21,9 @@ const AdminRuleForm=()=>import('@/views/rule/form')
 // 企业
 const CompanyList=()=>import('@/views/company/index')
 const CompanyForm=()=>import('@/views/company/form')
+// 服务
+const ServiceList=()=>import('@/views/service/index')
+const ServiceForm=()=>import('@/views/service/form')
 
 const companyTypeList=()=>import('@/views/company/type/index')
 const companyTypeForm=()=>import('@/views/company/type/form')
@@ -145,6 +148,27 @@ const routes = [
                 name:"companyTypeEdit",
                 component:companyTypeForm
             },
+        ]
+    },
+    {
+        path: '/service',
+        component: LayoutBasic,
+        children: [
+            {
+                path:"",
+                name:"serviceList",
+                component:ServiceList
+            },
+            {
+                path:"add",
+                name:"serviceAdd",
+                component:ServiceForm
+            },
+            {
+                path:"edit/:id",
+                name:"serviceEdit",
+                component:ServiceForm
+            }
         ]
     }
 ]
