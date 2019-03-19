@@ -43,3 +43,6 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .el-textarea__inner{
     width:260px;
 }
+.el-submenu .el-menu-item{
+    min-width: auto !important;
+}

@@ -21,12 +21,17 @@ const AdminRuleForm=()=>import('@/views/rule/form')
 // 企业
 const CompanyList=()=>import('@/views/company/index')
 const CompanyForm=()=>import('@/views/company/form')
+const CompanyOfficeList=()=>import('@/views/company/office/index')
+const CompanyOfficeForm=()=>import('@/views/company/office/form')
 // 服务
 const ServiceList=()=>import('@/views/service/index')
-const ServiceForm=()=>import('@/views/service/form')
+const ServiceSetting=()=>import('@/views/service/setting')
 
 const companyTypeList=()=>import('@/views/company/type/index')
 const companyTypeForm=()=>import('@/views/company/type/form')
+// 订单
+const orderList=()=>import('@/views/order/index')
+const orderForm=()=>import('@/views/order/form')
 
 const routes = [
     {
@@ -148,6 +153,21 @@ const routes = [
                 name:"companyTypeEdit",
                 component:companyTypeForm
             },
+            {
+                path:"office",
+                name:"companyOfficeList",
+                component:CompanyOfficeList
+            },
+            {
+                path:"office/add",
+                name:"companyOfficeAdd",
+                component:CompanyOfficeForm
+            },
+            {
+                path:"office/edit/:id",
+                name:"companyOfficeEdit",
+                component:CompanyOfficeForm
+            }
         ]
     },
     {
@@ -155,19 +175,30 @@ const routes = [
         component: LayoutBasic,
         children: [
             {
-                path:"",
+                path:":alias",
                 name:"serviceList",
                 component:ServiceList
             },
             {
-                path:"add",
-                name:"serviceAdd",
-                component:ServiceForm
+                path:":alias/setting/:id",
+                name:"ServiceSetting",
+                component:ServiceSetting
+            }
+        ]
+    },
+    {
+        path: '/order',
+        component: LayoutBasic,
+        children: [
+            {
+                path:":name",
+                name:"orderList",
+                component:orderList
             },
             {
-                path:"edit/:id",
-                name:"serviceEdit",
-                component:ServiceForm
+                path:"edit/:name",
+                name:"orderEdit",
+                component:orderForm
             }
         ]
     }

@@ -10,7 +10,7 @@ export function getCompanies(page=1,limit=20){
         params:{
             page,limit
         }
-    })   
+    })
 }
 
 export function getCompany(company_id){
@@ -22,11 +22,7 @@ export function addCompany(company){
 }
 
 export function editCompany(company){
-    return req.put(`${process.env.API_URL}/admin/company/${company.id}`,{
-        id:company.id,
-        name:company.name,
-        remark:company.remark
-    })
+    return req.put(`${process.env.API_URL}/admin/company/${company.id}`,company)
 }
 
 export function delCompany(company_id){

@@ -2,17 +2,24 @@
     <el-container>
         <el-card style="width: 100%">
             <div class="header" slot="header">
-                <span class="title">服务列表</span>
+                <span class="title">『{{service.name}}』 -- 企业列表</span>
                 <div class="actions">
-                    <el-button type="primary" size="small" @click="goServiceAdd">新增服务</el-button>
+                    <el-button type="primary" size="small" @click="goServiceCompany">新增企业</el-button>
                 </div>
             </div>
-            <el-table :data="services" :fit="true" :stripe="true">
-                <el-table-column v-for="column in columns" :prop="column.name" :label="column.label" :width="column.width" align="center" :sortable="column.sort"></el-table-column>
+            <el-table :data="companies" :fit="true" :stripe="true">
+                <el-table-column v-for="column in columns" :prop="column.name" :label="column.label" :width="column.width" align="center" :sortable="column.sort">
+                    <template slot-scope="scope">
+                        <span v-if="column.name=='logo'">
+                            <img :src="scope.row[column.name]" style="width: 30px;" alt="" />
+                        </span>
+                        <span v-else>{{scope.row[column.name]}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
                         [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
-                        [<el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>] 
+                        [<el-button type="text" size="mini" @click="goSetting(scope.row.id)">配置</el-button>] 
                     </template>
                 </el-table-column>
             </el-table>
@@ -26,94 +33,83 @@
 </template>
 
 <script lang="ts">
-    import { Component,Provide,Vue } from 'vue-property-decorator'
-    import { getServices,delService } from '@/api/service'
+    import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
+    import { getServices,getService,getServiceCompany } from '@/api/service'
 
     @Component({})
     export default class Service extends Vue{
 
-       @Provide() services=[]
+       @Provide() companies=[]
+       @Provide() service={alias:""}
        @Provide() total=0
        @Provide() pageSize=20
        @Provide() columns=[
             {
-                label:"ID",
-                name:"id",
-                width:"60px",
-                sort:true
+                label:"logo",
+                name:"logo",
             },
             {
                 label:"企业名",
                 name:"name",
-            },
-            {
-                label:"企业类型",
-                name:"type",
-            },
-            {
-                label:"联系人",
-                name:"contact",
-            },
-            {
-                label:"联系人电话",
-                name:"tel",
-            },
-            {
-                label:"地址",
-                name:"address",
-            },
-            {
-                label:"排序",
-                name:"sort",
-            },
-            {
-                label:"创建时间",
-                name:"createtime",
             }
        ];
 
-       goServiceAdd(){
-            this.$router.push({name:"ServiceList"})
+       @Watch("$route")
+       changeRoute(route){
+            if(route.name=='serviceList'){
+                this.companies=[]
+                this.service={alias:""}
+                this.service.alias=route.params.alias
+                this.listServiceCompany(1)
+            }
        }
 
-       edit(id:any){
-            this.$router.push({name:"serviceEdit",params:{id:id}})
+       goServiceCompany(){
+            this.$router.push({name:"ServiceSetting"})
+       }
+
+       goSetting(id:any){
+            console.log("id:",id)
+            console.log({alias:this.service.alias,id:id})
+            this.$router.push({name:"ServiceSetting",params:{alias:this.service.alias,id:id}})
        }
 
        del(id:any){
             this.$confirm("是否确定要删除该服务","提示",{
                 showCancelButton:true
             }).then(()=>{
-                delService(id).then(data=>{
-                    this.$message({
-                        type:"success",
-                        message:"删除成功"
-                    })
-                    this.services=this.services.filter(item=>{
-                        if(item.id!=id){
-                            return true
-                        }
-                    })
-                })
+                // delService(id).then(data=>{
+                //     this.$message({
+                //         type:"success",
+                //         message:"删除成功"
+                //     })
+                //     this.companies=this.companies.filter(item=>{
+                //         if(item.id!=id){
+                //             return true
+                //         }
+                //     })
+                // })
             }).catch(()=>{
                 
             })
        }
 
-       listServices(page=1){
-            getServices(page).then(data=>{
-                this.services=data.data.data
+       listServiceCompany(page=1){
+            getServiceCompany(this.service.alias,page).then(data=>{
+                this.companies=data.data.data
+                this.service=data.data.service
                 this.total=data.data.total
                 this.pageSize=data.data.size
             })
        }
 
        changePage(page){
-            this.listServices(page)
+            this.listServiceCompany(page)
        }
 
        mounted(){
-            this.listServices(1)
+            this.service.alias=this.$route.params.alias
+            this.listServiceCompany(1)
        }
 
     }

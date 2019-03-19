@@ -42,28 +42,31 @@
                 ]
             },
             {
+                title:"企业管理",
+                icon:"menu",
+                path:"/company"
+                // submenus:[
+                //     {
+                //         title:"企业列表",
+                //         path:"/company"
+                //     },
+                //     {
+                //         title:"企业类型",
+                //         path:"/company/type"
+                //     }
+                // ]
+            },
+            {
                 title:"服务列表",
                 path:"/service",
                 icon:"menu",
                 submenus:[]
             },
             {
-                title:"企业管理",
+                title:"订单",
+                path:"/order",
                 icon:"menu",
-                submenus:[
-                    {
-                        title:"企业列表",
-                        path:"/company"
-                    },
-                    {
-                        title:"企业类型",
-                        path:"/company/type"
-                    },
-                    {
-                        title:"企业服务",
-                        path:"/company/service"
-                    }
-                ]
+                submenus:[]
             }
         ]
 
@@ -77,7 +80,15 @@
                         let submenus=data.data.map(item=>{
                             return {
                                 'title':item.name,
-                                "path":"service/"+item.id
+                                "path":"/service/"+item.alias
+                            }
+                        })
+                        this.$set(this.menus[index],"submenus",submenus)
+                    }else if(item.title=="订单"){
+                        let submenus=data.data.map(item=>{
+                            return {
+                                'title':item.name,
+                                "path":"/order/"+item.alias
                             }
                         })
                         this.$set(this.menus[index],"submenus",submenus)

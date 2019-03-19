@@ -27,6 +27,16 @@
                 <el-form-item label="企业地址" prop="address" style="display: block;">
                     <el-input type="text" v-model="company.address" clearable autocomplete="off"></el-input>
                 </el-form-item>
+                <el-form-item label="开通企业服务" prop="services" style="display: block;">
+                    <el-select v-model="company.services" filterable multiple clearable placeholder="请选择企业服务">
+                        <el-option
+                          v-for="service in services"
+                          :key="service.id"
+                          :label="service.name"
+                          :value="service.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="联系人" prop="contact" style="display: block;">
                     <el-input type="text" v-model="company.contact" clearable autocomplete="off"></el-input>
                 </el-form-item>
@@ -36,7 +46,13 @@
                 <el-form-item label="介绍" prop="content" style="display: block;">
                     <el-input type="textarea" autosize v-model="company.content" clearable autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="排序(从大到小)" prop="sort" style="display: block;">
+                <el-form-item prop="sort" style="display: block;">
+                    <div slot="label">
+                        <span>排序</span>
+                        <el-tooltip content="从大到小进行排序" placement="top">
+                            <el-icon class="el-icon-info" style="display: inline-block;"></el-icon>
+                        </el-tooltip>
+                    </div>
                     <el-input type="text" v-model="company.sort" clearable autocomplete="off"></el-input>
                 </el-form-item>
                 <div style="margin-left: 150px;">
@@ -49,6 +65,7 @@
 <script lang="ts">
     import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
     import { getCompany,addCompany,editCompany,getTypes } from '@/api/company'
+    import { getAllServices } from '@/api/service'
     import { mapMutations } from 'vuex'
 
     @Component({
@@ -63,10 +80,11 @@
             contact:"",
             tel:"",
             content:"",
-
+            services:[]
         }
         @Provide() types=[]
         @Provide() is_add:Boolean=false
+         @Provide() services=[]
 
         get posturl(){
             return process.env.API_URL+"/admin/upload/image"
@@ -82,6 +100,7 @@
                     this.$router.push({name:"companyList"})
                 })
             }else{
+                console.log(this.company)
                 editCompany(this.company).then(data=>{
                     console.log('editcompany',data)
                     this.$router.push({name:"companyList"})
@@ -96,15 +115,24 @@
         mounted(){
             if(this.$route.params.id){
                 this.is_add=false
-                getCompany(parseInt(this.$route.params.id)).then(data=>{
-                    this.company=data.data
+                Promise.all([getAllServices(),getTypes(),getCompany(parseInt(this.$route.params.id))]).then(([services,types,company])=>{
+                    
+                    this.services=services.data
+                        this.types=types.data.data
+                    setTimeout(()=>{
+                        this.company=company.data
+                    },200)
                 })
             }else{
                 this.is_add=true
+                getTypes().then(data=>{
+                    this.types=data.data.data
+                })
+                getAllServices().then(data=>{
+                    this.services=data.data
+                })
             }
-            getTypes().then(data=>{
-                this.types=data.data.data
-            })
+            
             this.$store.commit("setBreadcrumb",[
                 {
                     route:{
