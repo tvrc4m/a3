@@ -27,6 +27,11 @@ const CompanyOfficeForm=()=>import('@/views/company/office/form')
 const ServiceList=()=>import('@/views/service/index')
 const ServiceSetting=()=>import('@/views/service/setting')
 
+// 家庭医生
+const JiatingDoctorForm=()=>import('@/views/service/jiating/form')
+// 体检套餐
+const TijianPakcageForm=()=>import('@/views/service/tijian/package/form')
+
 const companyTypeList=()=>import('@/views/company/type/index')
 const companyTypeForm=()=>import('@/views/company/type/form')
 // 订单
@@ -40,7 +45,10 @@ const routes = [
         children: [
             {
                 path:"",
-                component:home
+                component:home,
+                meta:{
+                    group:"home"
+                }
             },
             {
                 path:"users",
@@ -84,17 +92,26 @@ const routes = [
             {
                 path:"",
                 name:"adminList",
-                component:AdminList
+                component:AdminList,
+                meta:{
+                    group:"admin"
+                }
             },
             {
                 path:"add",
                 name:"adminAdd",
-                component:AdminForm
+                component:AdminForm,
+                meta:{
+                    group:"admin"
+                }
             },
             {
                 path:"edit/:id",
                 name:"adminEdit",
-                component:AdminForm
+                component:AdminForm,
+                meta:{
+                    group:"admin"
+                }
             },
         ]
     },
@@ -105,17 +122,26 @@ const routes = [
             {
                 path:"",
                 name:"adminRule",
-                component:AdminRuleList
+                component:AdminRuleList,
+                meta:{
+                    group:"admin"
+                }
             },
             {
                 path:"add",
                 name:"adminRuleAdd",
-                component:AdminRuleForm
+                component:AdminRuleForm,
+                meta:{
+                    group:"admin"
+                }
             },
             {
                 path:"edit/:id",
                 name:"adminRuleEdit",
-                component:AdminRuleForm
+                component:AdminRuleForm,
+                meta:{
+                    group:"admin"
+                }
             }
         ]
     },
@@ -126,47 +152,74 @@ const routes = [
             {
                 path:"",
                 name:"companyList",
-                component:CompanyList
+                component:CompanyList,
+                meta:{
+                    group:"company"
+                }
             },
             {
                 path:"add",
                 name:"companyAdd",
-                component:CompanyForm
+                component:CompanyForm,
+                meta:{
+                    group:"company"
+                }
             },
             {
                 path:"edit/:id",
                 name:"companyEdit",
-                component:CompanyForm
+                component:CompanyForm,
+                meta:{
+                    group:"company"
+                }
             },
             {
                 path:"type",
                 name:"companyTypeList",
-                component:companyTypeList
+                component:companyTypeList,
+                meta:{
+                    group:"company"
+                }
             },
             {
                 path:"type/add",
                 name:"companyTypeAdd",
-                component:companyTypeForm
+                component:companyTypeForm,
+                meta:{
+                    group:"company"
+                }
             },
             {
                 path:"type/edit/:id",
                 name:"companyTypeEdit",
-                component:companyTypeForm
+                component:companyTypeForm,
+                meta:{
+                    group:"company"
+                }
             },
             {
                 path:"office",
                 name:"companyOfficeList",
-                component:CompanyOfficeList
+                component:CompanyOfficeList,
+                meta:{
+                    group:"company"
+                }
             },
             {
                 path:"office/add",
                 name:"companyOfficeAdd",
-                component:CompanyOfficeForm
+                component:CompanyOfficeForm,
+                meta:{
+                    group:"company"
+                }
             },
             {
                 path:"office/edit/:id",
                 name:"companyOfficeEdit",
-                component:CompanyOfficeForm
+                component:CompanyOfficeForm,
+                meta:{
+                    group:"company"
+                }
             }
         ]
     },
@@ -177,12 +230,50 @@ const routes = [
             {
                 path:":alias",
                 name:"serviceList",
-                component:ServiceList
+                component:ServiceList,
+                meta:{
+                    group:"service"
+                }
             },
             {
                 path:":alias/setting/:id",
                 name:"ServiceSetting",
-                component:ServiceSetting
+                component:ServiceSetting,
+                meta:{
+                    group:"service"
+                }
+            },
+            {
+                path:"jiating/doctor/add",
+                name:"JiatingDoctorAdd",
+                component:JiatingDoctorForm,
+                meta:{
+                    group:"service"
+                }
+            },
+            {
+                path:"jiating/doctor/add/:id",
+                name:"JiatingDoctorEdit",
+                component:JiatingDoctorForm,
+                meta:{
+                    group:"service"
+                }
+            },
+            {
+                path:"tijian/package/add",
+                name:"TijianPakcageAdd",
+                component:TijianPakcageForm,
+                meta:{
+                    group:"service"
+                }
+            },
+            {
+                path:"tijian/package/add/:id",
+                name:"TijianPakcageEdit",
+                component:TijianPakcageForm,
+                meta:{
+                    group:"service"
+                }
             }
         ]
     },
@@ -193,12 +284,18 @@ const routes = [
             {
                 path:":name",
                 name:"orderList",
-                component:orderList
+                component:orderList,
+                meta:{
+                    group:"order"
+                }
             },
             {
                 path:"edit/:name",
                 name:"orderEdit",
-                component:orderForm
+                component:orderForm,
+                meta:{
+                    group:"order"
+                }
             }
         ]
     }

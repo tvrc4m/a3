@@ -103,6 +103,14 @@
                 this.$message.error("未指定企业")
                 this.$router.back()
             }
+            this.$store.commit("setBreadcrumb",[
+                {
+                    route:{
+                        name:"companyList",
+                    },
+                    name:"企业列表"
+                }
+            ])
        }
     }
 </script>

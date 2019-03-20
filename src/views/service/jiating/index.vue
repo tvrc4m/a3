@@ -2,12 +2,12 @@
     <el-container>
         <el-card style="width: 100%">
             <div class="header" slot="header">
-                <span class="title">『{{service.name}}』 -- 企业列表</span>
+                <span class="title">家庭医生服务</span>
                 <div class="actions">
-                    <el-button type="primary" size="small" @click="goServiceCompany">新增企业</el-button>
+                    <el-button type="primary" size="small" @click="addNewDoctor">新增家庭医生</el-button>
                 </div>
             </div>
-            <el-table :data="companies" :fit="true" :stripe="true">
+            <el-table :data="doctors" :fit="true" :stripe="true">
                 <el-table-column v-for="column in columns" :prop="column.name" :label="column.label" :width="column.width" align="center" :sortable="column.sort">
                     <template slot-scope="scope">
                         <span v-if="column.name=='logo'">
@@ -18,14 +18,8 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        <div v-if="service.alias=='jiating'">
-                            <el-button type="primary" plain size="mini" @click="del(scope.row.id)">删除</el-button>
-                            <el-button type="primary" plain size="mini" @click="goSetting(scope.row.id)">查看家庭医生</el-button>
-                        </div>
-                        <div v-else>
-                            <el-button type="primary" plain size="mini" @click="del(scope.row.id)">删除</el-button>
-                            <el-button type="primary" plain size="mini" @click="goSetting(scope.row.id)">配置</el-button>
-                        </div>
+                        <el-button type="primary" plain size="mini" @click="del(scope.row.id)">删除</el-button>
+                        <el-button type="primary" plain size="mini" @click="edit(scope.row.id)">编辑</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -40,45 +34,57 @@
 
 <script lang="ts">
     import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
-    import { getServices,getService,getServiceCompany } from '@/api/service'
+    import { getDoctors,delDoctor } from '@/api/service/doctor'
+    import { getCompany } from '@/api/company'
 
     @Component({})
     export default class Service extends Vue{
 
-       @Provide() companies=[]
+       @Provide() doctors=[]
+       @Provide() company={id:0}
        @Provide() service={alias:""}
        @Provide() total=0
        @Provide() pageSize=20
        @Provide() columns=[
             {
-                label:"logo",
-                name:"logo",
+                label:"ID",
+                name:"id",
             },
             {
-                label:"企业名",
+                label:"姓名",
                 name:"name",
-            }
+            },
+            {
+                label:"联系电话",
+                name:"tel",
+            },
+            {
+                label:"预约时间",
+                name:"time",
+            },
+            {
+                label:"备注",
+                name:"remark",
+            },
        ];
 
-       @Watch("$route")
-       changeRoute(route){
+        @Watch("$route")
+        changeRoute(route){
             if(route.name=='serviceList'){
-                this.companies=[]
+                this.doctors=[]
                 this.service={alias:""}
                 this.service.alias=route.params.alias
-                this.listServiceCompany(1)
+                this.listDoctors(1)
             }
-       }
+        }
 
-       goServiceCompany(){
-            this.$router.push({name:"ServiceSetting"})
-       }
+        addNewDoctor(){
+            this.$router.push({name:"JiatingDoctorAdd",query:{company_id:this.company.id.toString()}})
+        }
 
-       goSetting(id:any){
-            console.log("id:",id)
-            console.log({alias:this.service.alias,id:id})
-            this.$router.push({name:"ServiceSetting",params:{alias:this.service.alias,id:id}})
-       }
+        edit(id:any){
+            this.$router.push({name:"JiatingDoctorEdit",params:{id:id},query:{company_id:this.company.id.toString()}})
+        }
 
        del(id:any){
             this.$confirm("是否确定要删除该服务","提示",{
@@ -89,7 +95,7 @@
                 //         type:"success",
                 //         message:"删除成功"
                 //     })
-                //     this.companies=this.companies.filter(item=>{
+                //     this.doctors=this.doctors.filter(item=>{
                 //         if(item.id!=id){
                 //             return true
                 //         }
@@ -100,22 +106,41 @@
             })
        }
 
-       listServiceCompany(page=1){
-            getServiceCompany(this.service.alias,page).then(data=>{
-                this.companies=data.data.data
-                this.service=data.data.service
+       listDoctors(page=1){
+            getDoctors(this.company.id, page).then(data=>{
+                this.doctors=data.data.data
                 this.total=data.data.total
                 this.pageSize=data.data.size
             })
        }
 
        changePage(page){
-            this.listServiceCompany(page)
+            this.listDoctors(page)
        }
 
        mounted(){
-            this.service.alias=this.$route.params.alias
-            this.listServiceCompany(1)
+            this.company.id=parseInt(this.$route.params.id)
+            this.listDoctors(1)
+            getCompany(this.company.id).then(data=>{
+                this.$store.commit("setBreadcrumb",[
+                    {
+                        route:{
+                            name:"companyList",
+                        },
+                        name:"企业列表"
+                    },
+                    {
+                        route:{
+                            name:"companyEdit",
+                            params:{
+                                id:
+                                data.data.id
+                            }
+                        },
+                        name:data.data.name
+                    }
+                ])
+            })
        }
 
     }

@@ -1,5 +1,5 @@
 <template>
-    <el-menu default-active="2" class="el-menu-vertical-demo" :router="true">
+    <el-menu :default-active="2" class="el-menu-vertical-demo" :router="true">
         <div  v-for="(menu,index) in menus">
             <el-menu-item :index="'index_'+index" v-if="!menu.submenus || menu.submenus.length==0" :route="{path:menu.path}">
                 <i v-if="menu.icon" :class="'el-icon-'+menu.icon"></i>
@@ -25,11 +25,13 @@
             {
                 title:"首页",
                 path:"/",
+                group:"home",
                 icon:"menu"
             },
             {
                 title:"后台账户",
                 icon:"menu",
+                group:"admin",
                 submenus:[
                     {
                         title:"后台账户列表",
@@ -44,6 +46,7 @@
             {
                 title:"企业管理",
                 icon:"menu",
+                group:"company",
                 path:"/company"
                 // submenus:[
                 //     {
@@ -56,15 +59,17 @@
                 //     }
                 // ]
             },
-            {
-                title:"服务列表",
-                path:"/service",
-                icon:"menu",
-                submenus:[]
-            },
+            // {
+            //     title:"服务列表",
+            //     path:"/service",
+            //     group:"service",
+            //     icon:"menu",
+            //     submenus:[]
+            // },
             {
                 title:"订单",
                 path:"/order",
+                group:"order",
                 icon:"menu",
                 submenus:[]
             }
@@ -72,7 +77,20 @@
 
         @Provide() services=[]
 
+        @Provide() route_path=""
+
+        activeClass(group){
+            console.log(this.$route.meta,group)
+            if(this.$route.meta.group==group){
+                return ['is-acitve']
+            }else{
+                return []
+            }
+        }
+
         mounted(){
+            this.route_path=this.$route.path
+            console.log(this.route_path)
             getAllServices().then(data=>{
                 this.services=data.data
                 this.menus.forEach((item,index)=>{

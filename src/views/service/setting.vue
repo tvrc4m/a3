@@ -1,16 +1,30 @@
 <template>
     <el-container>
-        <div is="tijian"></div>
+        <div :is="service"></div>
     </el-container>
 </template>
 <script lang="ts">
-    import { Component,Vue } from 'vue-property-decorator'
+    import { Component,Provide,Vue } from 'vue-property-decorator'
+    import tijian from './tijian/package/index'
+    import jiating from './jiating/index'
     @Component({
         components:{
-            tijian: ()=>import("./tijian/form.vue")
         },
     })
     export default class ServiceSetting extends Vue{
 
+        @Provide() service:any=null;
+
+        mounted(){
+            console.log(this.$route.params.alias)
+            switch(this.$route.params.alias){
+                case 'tijian':
+                    this.service = tijian;
+                    break;
+                case 'jiating':
+                    this.service= jiating;
+                    break;
+            }
+        }
     }
 </script>
