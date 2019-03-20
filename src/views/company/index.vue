@@ -19,11 +19,11 @@
                         <span v-else>{{scope.row[column.name]}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center">
+                <el-table-column label="操作" align="center" width="200px">
                     <template slot-scope="scope">
-                        [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
-                        [<el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>] 
-                        [<el-button v-if="scope.row.type==2" type="text" size="mini" @click="office(scope.row.id)">科室</el-button>] 
+                        <el-button type="danger" plain size="mini" @click="del(scope.row.id)">删除</el-button>
+                        <el-button type="primary" plain size="mini" @click="edit(scope.row.id)">编辑</el-button>
+                        <el-button v-if="scope.row.type==2" type="success" plain size="mini" @click="office(scope.row.id)">科室</el-button>
                     </template>
                 </el-table-column>
             </el-table>

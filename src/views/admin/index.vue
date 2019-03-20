@@ -11,8 +11,8 @@
                 <el-table-column v-for="column in columns" :prop="column.name" :label="column.label" :width="column.width" align="center" :sortable="column.sort"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
-                        [<el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>] 
+                        <el-button type="danger" plain size="mini" @click="del(scope.row.id)">删除</el-button>
+                        <el-button type="primary" plain size="mini" @click="edit(scope.row.id)">编辑</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -99,14 +99,6 @@
             }).catch(()=>{
                 
             })
-       }
-
-       sortBySubscribe(a,b){
-            console.log(a,b)
-       }
-
-       subscribe(user_id:any){
-            this.$router.push({name:"userAuthor",params:{uid:user_id}})
        }
 
        listUsers(page=1){

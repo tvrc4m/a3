@@ -62,7 +62,7 @@
                     this.submitting = true
                     login(this.form.username,this.form.password).then(data=>{
                         localStorage.setItem("token",data.data.token)
-                        this.$router.push("/users")
+                        this.$router.push("/")
                     }).catch(err=>{
                         this.$message({
                             message:err,
@@ -141,4 +141,8 @@
         }
     }
 </style>
-
+<style>
+    .login .el-input__inner{
+        width: 100% !important;
+    }
+</style>

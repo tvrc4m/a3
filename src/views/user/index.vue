@@ -4,22 +4,28 @@
             <div class="header" slot="header">
                 <span class="title">用户列表</span>
                 <div class="actions">
-                    <el-button type="primary" size="small" @click="goUserAdd">新增账户</el-button>
+                    <el-button type="primary" size="small" @click="goUserAdd">新增用户</el-button>
                 </div>
             </div>
             <el-table :data="users" :fit="true" :stripe="true">
-                <el-table-column prop="id" label="UID" width="100px" align="center" :sortable="true"></el-table-column>
-                <el-table-column prop="phone" label="手机号" width="160px" align="center"></el-table-column>
-                <el-table-column label="创建时间" align="center" width="180px">
+                <el-table-column v-for="column in columns" :prop="column.name" :label="column.label" :width="column.width" align="center" :sortable="column.sort">
                     <template slot-scope="scope">
-                        <span>{{scope.row.create_time}}</span>
+                        <span v-if="column.name=='createtime'">
+                            {{scope.row['createtime'] | formatDate}}
+                        </span>
+                        <span v-else-if="column.name=='sex'">
+                            {{scope.row['sex']==1?'男':'女'}}
+                        </span>
+                        <span v-else-if="column.name=='status'">
+                            <el-switch v-model="scope.row['status']" :active-value="1" :inactive-value="0" active-color="#13ce66" inactive-color="#ff4949" @change="changeStatus(scope.row)"></el-switch>
+                        </span>
+                        <span v-else>{{scope.row[column.name]}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
-                        [<el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>] 
-                        [<el-button type="text" size="mini" @click="subscribe(scope.row.id)">订阅作者</el-button>]
+                        <el-button type="danger" plain size="mini" @click="del(scope.row.id)">删除</el-button>
+                        <el-button type="primary" plain size="mini" @click="edit(scope.row.id)">编辑</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -35,34 +41,70 @@
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
 
-    import { getUsers,delUser,TypeUser } from '@/api/user'
+    import { getUsers,delUser,editUserStatus } from '@/api/user'
 
     @Component({})
     export default class UserIndex extends Vue{
 
-       @Provide() users:Array<TypeUser>=[]
+       @Provide() users=[]
        @Provide() total=0
        @Provide() pageSize=20
+       @Provide() columns=[
+            {
+                label:"ID",
+                name:"id",
+                width:"60px",
+                sort:true
+            },
+            {
+                label:"手机号",
+                name:"phone",
+            },
+            {
+                label:"姓名",
+                name:"realname",
+            },
+            {
+                label:"性别",
+                name:"sex",
+            },
+            {
+                label:"单位",
+                name:"company",
+            },
+            {
+                label:"职务",
+                name:"job",
+            },
+            {
+                label:"状态",
+                name:"status",
+            },
+            {
+                label:"创建时间",
+                name:"createtime",
+            }
+       ];
 
        goUserAdd(){
-            this.$router.push("/user/add")
+            this.$router.push({name:"userAdd"})
        }
 
-       edit(uid:any){
-            this.$router.push({name:"userEdit",params:{uid:uid}})
+       edit(id:any){
+            this.$router.push({name:"userEdit",params:{id:id}})
        }
 
-       del(uid:any){
+        del(id:any){
             this.$confirm("是否确定要删除该用户","提示",{
                 showCancelButton:true
             }).then(()=>{
-                delUser(uid).then(data=>{
+                delUser(id).then(data=>{
                     this.$message({
                         type:"success",
                         message:"删除成功"
                     })
                     this.users=this.users.filter(item=>{
-                        if(item.id!=uid){
+                        if(item.id!=id){
                             return true
                         }
                     })
@@ -70,20 +112,19 @@
             }).catch(()=>{
                 
             })
-       }
+        }
 
-       sortBySubscribe(a,b){
-            console.log(a,b)
-       }
-
-       subscribe(user_id:any){
-            this.$router.push({name:"userAuthor",params:{uid:user_id}})
-       }
+        changeStatus(user){
+            editUserStatus(user.id,user.status).then(data=>{
+                console.log(data)
+            })
+        }
 
        listUsers(page=1){
-            getUsers({page}).then(data=>{
-                this.users=data.data.users
+            getUsers(page).then(data=>{
+                this.users=data.data.data
                 this.total=data.data.total
+                this.pageSize=data.data.size
             })
        }
 

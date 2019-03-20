@@ -22,7 +22,7 @@
 
         logout(){
             localStorage.removeItem('token')
-            this.$router.push('/user/login')
+            this.$router.push('/login')
         }
     }
 </script>

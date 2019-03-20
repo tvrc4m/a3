@@ -11,8 +11,8 @@
                 <el-table-column v-for="column in columns" :prop="column.name" :label="column.label" :width="column.width" align="center" :sortable="column.sort"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        [<el-button v-if="!scope.row.is_super" type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
-                        [<el-button v-if="!scope.row.is_super" type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>]
+                        <el-button v-if="!scope.row.is_super" type="danger" plain size="mini" @click="del(scope.row.id)">删除</el-button>
+                        <el-button v-if="!scope.row.is_super" type="primary" plain size="mini" @click="edit(scope.row.id)">编辑</el-button>
                     </template>
                 </el-table-column>
             </el-table>

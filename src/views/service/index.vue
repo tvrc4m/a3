@@ -19,11 +19,11 @@
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
                         <div v-if="service.alias=='jiating'">
-                            <el-button type="primary" plain size="mini" @click="del(scope.row.id)">删除</el-button>
+                            <el-button type="danger" plain size="mini" @click="del(scope.row.id)">删除</el-button>
                             <el-button type="primary" plain size="mini" @click="goSetting(scope.row.id)">查看家庭医生</el-button>
                         </div>
                         <div v-else>
-                            <el-button type="primary" plain size="mini" @click="del(scope.row.id)">删除</el-button>
+                            <el-button type="danger" plain size="mini" @click="del(scope.row.id)">删除</el-button>
                             <el-button type="primary" plain size="mini" @click="goSetting(scope.row.id)">配置</el-button>
                         </div>
                     </template>

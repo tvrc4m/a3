@@ -72,6 +72,13 @@
                 group:"order",
                 icon:"menu",
                 submenus:[]
+            },
+            {
+                title:"用户管理",
+                path:"/user",
+                group:"user",
+                icon:"menu",
+                submenus:[]
             }
         ]
 

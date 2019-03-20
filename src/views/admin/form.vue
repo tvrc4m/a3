@@ -20,6 +20,7 @@
                     <el-input type="text" v-model="user.password" autocomplete="off"></el-input>
                 </el-form-item>
                 <div style="margin-left: 150px;">
+                    <el-button type="primary" size="small" @click="back">返回</el-button>
                     <el-button type="primary" size="small" @click="add">{{btnname}}</el-button>
                 </div>
             </el-form>
@@ -50,6 +51,10 @@
 
         get btnname():String{
             return this.is_add?"添加":"编辑"
+        }
+
+        back(){
+            return this.$router.back()
         }
 
         add(){

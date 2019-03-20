@@ -7,7 +7,7 @@ const LayoutBasic=()=>import('@/views/layout/basic')
 const LayoutUser=()=>import('@/views/layout/user')
 
 const home=()=>import('@/views/home/index')
-const login=()=>import('@/views/user/login')
+const login=()=>import('@/views/admin/login')
 // 用户
 const UserList=()=>import('@/views/user/index')
 const UserForm=()=>import('@/views/user/form')
@@ -49,16 +49,33 @@ const routes = [
                 meta:{
                     group:"home"
                 }
-            },
+            }
+        ]
+    },
+    {
+        path: '/login',
+        component: LayoutUser,
+        children: [
             {
-                path:"users",
+                path:"",
+                component:login,
+            }
+        ]
+    },
+    {
+        path: '/user',
+        component: LayoutBasic,
+        children: [
+            {
+                path:"",
                 component:UserList,
+                name:"userList",
                 meta:{
                     group:"user"
                 }
             }, 
             {
-                path:"user/add",
+                path:"add",
                 component:UserForm,
                 name:"userAdd",
                 meta:{
@@ -66,23 +83,13 @@ const routes = [
                 }
             },
             {
-                path:"user/edit/:uid",
+                path:"edit/:id",
                 component:UserForm,
                 name:"userEdit",
                 meta:{
                     group:"user"
                 }
             }
-        ]
-    },
-    {
-        path: '/user',
-        component: LayoutUser,
-        children: [
-            {
-                path:"login",
-                component:login
-            },
         ]
     },
     {
