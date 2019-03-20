@@ -79,6 +79,13 @@
                 group:"user",
                 icon:"menu",
                 submenus:[]
+            },
+            {
+                title:"新闻管理",
+                path:"/news",
+                group:"news",
+                icon:"menu",
+                submenus:[]
             }
         ]
 

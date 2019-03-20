@@ -12,6 +12,7 @@
                     <el-input type="textarea" autosize v-model="package.content" clearable autocomplete="off"></el-input>
                 </el-form-item>
                 <div style="margin-left: 150px;">
+                    <el-button type="primary" size="small" @click="back">返回</el-button>
                     <el-button type="primary" size="small" @click="add">{{btnname}}</el-button>
                 </div>
             </el-form>
@@ -23,9 +24,11 @@
     import { getPackage,addPackage,editPackage } from '@/api/service/package'
     import { getOffices } from '@/api/hospital'
     import { mapMutations } from 'vuex'
+    import FormMixin from '@/mixin/form'
 
     @Component({
         components:{},
+        mixins:[FormMixin]
     })
     export default class AdminUserForm extends Vue{
 
@@ -36,14 +39,9 @@
             company_id:0,
             tel:"",
         }
-        @Provide() is_add:Boolean=false
         @Provide() offices=[]
         @Provide() company={id:null}
         @Provide() alias="tijian"
-
-        get btnname():String{
-            return this.is_add?"添加":"编辑"
-        }
 
         add(){
             if(this.is_add){
@@ -61,12 +59,10 @@
         mounted(){
             this.company.id=parseInt(this.$route.query.company_id)
             if(this.$route.params.id){
-                this.is_add=false
                 getPackage(parseInt(this.$route.params.id)).then(data=>{
                     this.package=data.data
                 })
             }else{
-                this.is_add=true
                 this.package.company_id=this.company.id
             }
             if(!this.company.id){

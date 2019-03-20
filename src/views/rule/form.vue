@@ -90,7 +90,7 @@
                         this.rule.paths.split(",").forEach(id=>{
                             this.$refs.tree.setChecked(id,true)
                         })
-                    },200)
+                    },100)
                 })
             }else{
                 this.is_add=true

@@ -38,6 +38,10 @@ const companyTypeForm=()=>import('@/views/company/type/form')
 const orderList=()=>import('@/views/order/index')
 const orderForm=()=>import('@/views/order/form')
 
+// 新闻
+const newsList=()=>import('@/views/news/index')
+const newsForm=()=>import('@/views/news/form')
+
 const routes = [
     {
         path: '/',
@@ -302,6 +306,36 @@ const routes = [
                 component:orderForm,
                 meta:{
                     group:"order"
+                }
+            }
+        ]
+    },
+    {
+        path: '/news',
+        component: LayoutBasic,
+        children: [
+            {
+                path:"",
+                name:"newsList",
+                component:newsList,
+                meta:{
+                    group:"news"
+                }
+            },
+            {
+                path:"add",
+                name:"newsAdd",
+                component:newsForm,
+                meta:{
+                    group:"news"
+                }
+            },
+            {
+                path:"edit/:id",
+                name:"newsEdit",
+                component:newsForm,
+                meta:{
+                    group:"news"
                 }
             }
         ]
