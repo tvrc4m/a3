@@ -47,3 +47,6 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .el-submenu .el-menu-item{
     min-width: auto !important;
 }
+.el-menu-item.is-active{
+    background-color:#ecf5ff !important;
+}

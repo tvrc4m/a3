@@ -1,7 +1,7 @@
 <template>
-    <el-menu :default-active="2" class="el-menu-vertical-demo" :router="true">
+    <el-menu ref="sidebar" class="el-menu-vertical-demo" :router="true" :default-active="selected_index">
         <div  v-for="(menu,index) in menus">
-            <el-menu-item :index="'index_'+index" v-if="!menu.submenus || menu.submenus.length==0" :route="{path:menu.path}">
+            <el-menu-item :index="'index_'+index" :class="activeClass(menu.path,'index_'+index)" v-if="!menu.submenus || menu.submenus.length==0" :route="{path:menu.path}">
                 <i v-if="menu.icon" :class="'el-icon-'+menu.icon"></i>
                 <span slot="title">{{menu.title}}</span>
             </el-menu-item>
@@ -10,13 +10,13 @@
                     <i  :class="'el-icon-'+menu.icon"></i>
                     <span>{{menu.title}}</span>
                 </template>
-                <el-menu-item v-for="(submenu,subindex) in menu.submenus" :route="{path:submenu.path}" :index="index+'_'+subindex">{{submenu.title}}</el-menu-item>
+                <el-menu-item v-for="(submenu,subindex) in menu.submenus" :class="activeClass(submenu.path,'submenu_'+index+'_'+subindex)" :route="{path:submenu.path}" :index="'submenu_'+index+'_'+subindex">{{submenu.title}}</el-menu-item>
             </el-submenu>
         </div>
     </el-menu>
 </template>
 <script lang="ts">
-    import { Component,Provide,Vue } from 'vue-property-decorator'
+    import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
     import { getAllServices } from '@/api/service'
     @Component({})
     export default class Sidebar extends Vue{
@@ -25,13 +25,11 @@
             {
                 title:"首页",
                 path:"/",
-                group:"home",
                 icon:"menu"
             },
             {
                 title:"后台账户",
                 icon:"menu",
-                group:"admin",
                 submenus:[
                     {
                         title:"后台账户列表",
@@ -46,7 +44,6 @@
             {
                 title:"企业管理",
                 icon:"menu",
-                group:"company",
                 path:"/company"
                 // submenus:[
                 //     {
@@ -69,21 +66,18 @@
             {
                 title:"订单",
                 path:"/order",
-                group:"order",
                 icon:"menu",
                 submenus:[]
             },
             {
                 title:"用户管理",
                 path:"/user",
-                group:"user",
                 icon:"menu",
                 submenus:[]
             },
             {
                 title:"新闻管理",
                 path:"/news",
-                group:"news",
                 icon:"menu",
                 submenus:[]
             },
@@ -108,14 +102,24 @@
 
         @Provide() route_path=""
 
-        activeClass(group){
-            console.log(this.$route.meta,group)
-            if(this.$route.meta.group==group){
-                return ['is-acitve']
+        @Provide() selected_index=""
+
+        @Provide() $refs:any
+
+        activeClass(path,menuindex){
+            if(this.$route.path==path){
+                this.selected_index=menuindex
+                return ['is-active']
             }else{
                 return []
             }
         }
+
+        // @Watch('selected_index')
+        // setSelectedIndex(val){
+        //     console.log("index:",val)
+        //     this.$refs.sidebar.open(val)
+        // }
 
         mounted(){
             this.route_path=this.$route.path
@@ -134,8 +138,8 @@
                     }else if(item.title=="订单"){
                         let submenus=data.data.map(item=>{
                             return {
-                                'title':item.name,
-                                "path":"/order/"+item.alias
+                                "title":item.name,
+                                "path":"/order/"+item.alias,
                             }
                         })
                         this.$set(this.menus[index],"submenus",submenus)
