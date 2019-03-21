@@ -3,7 +3,14 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import policy from './policy'
+import service from './service'
+
 export default new Vuex.Store({
+    modules:{
+        policy,
+        service,
+    },
     state:{
         breadcrumbs:[],
         showBreadcrumb: true

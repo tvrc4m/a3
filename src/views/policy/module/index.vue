@@ -2,22 +2,22 @@
     <el-container>
         <el-card style="width: 100%">
             <div class="header" slot="header">
-                <span class="title">用户列表</span>
+                <span class="title">模块列表</span>
                 <div class="actions">
-                    <el-button type="primary" size="small" @click="goUserAdd">新增用户</el-button>
+                    <el-button type="primary" size="small" @click="goModuleAdd">新增模块</el-button>
                 </div>
             </div>
-            <el-table :data="users" :fit="true" :stripe="true" @filter-change="filterHandler">
-                <el-table-column v-for="column in columns" :prop="column.name" :label="column.label" :width="column.width" align="center" :sortable="column.sort" :column-key="column.name" :filters="column.filters" :filter-multiple="false">
+            <el-table :data="modules" :fit="true" :stripe="true">
+                <el-table-column v-for="column in columns" :prop="column.name" :label="column.label" :width="column.width" align="center" :sortable="column.sort">
                     <template slot-scope="scope">
-                        <span v-if="column.name=='createtime'">
-                            {{scope.row['createtime'] | formatDate}}
-                        </span>
-                        <span v-else-if="column.name=='sex'">
-                            {{scope.row['sex']==1?'男':'女'}}
+                        <span v-if="column.name=='img'">
+                            <img :src="scope.row['img']" style="width: 32px;" alt="" />
                         </span>
                         <span v-else-if="column.name=='status'">
-                            <el-switch v-model="scope.row['status']" :active-value="1" :inactive-value="0" active-color="#13ce66" inactive-color="#ff4949" @change="changeStatus(scope.row)"></el-switch>
+                            <el-switch v-model="scope.row['status']" active-color="#13ce66" inactive-color="#ff4949" :active-value="1" :inactive-value="0" @change="changeStatus(scope.row)"></el-switch>
+                        </span>
+                        <span v-else-if="column.name=='createtime'">
+                            {{scope.row['createtime'] | formatDate}}
                         </span>
                         <span v-else>{{scope.row[column.name]}}</span>
                     </template>
@@ -41,12 +41,12 @@
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
 
-    import { getUsers,delUser,editUserStatus } from '@/api/user'
+    import { listModule,delModule,updateModuleStatus } from '@/api/policy'
 
     @Component({})
-    export default class UserIndex extends Vue{
+    export default class NewsIndex extends Vue{
 
-       @Provide() users=[]
+       @Provide() modules=[]
        @Provide() params={}
        @Provide() total=0
        @Provide() pageSize=20
@@ -55,33 +55,25 @@
                 label:"ID",
                 name:"id",
                 width:"60px",
-                sort:true
+                sort:true,
             },
             {
-                label:"手机号",
-                name:"phone",
+                label:"图片",
+                name:"img",
             },
             {
-                label:"姓名",
-                name:"realname",
+                label:"模块名",
+                name:"name",
             },
             {
-                label:"性别",
-                name:"sex",
-                filters:[{text:"男",value:1},{text:"女",value:2}],
-            },
-            {
-                label:"单位",
-                name:"company",
-            },
-            {
-                label:"职务",
-                name:"job",
+                label:"排序",
+                name:"sort",
+                sort: true,
             },
             {
                 label:"状态",
                 name:"status",
-                filters:[{text:"启用",value:1},{text:"禁用",value:0}],
+                filters:[{text:"上线中",value:1},{text:"下线中",value:0}],
             },
             {
                 label:"创建时间",
@@ -89,24 +81,24 @@
             }
        ];
 
-       goUserAdd(){
-            this.$router.push({name:"userAdd"})
+       goModuleAdd(){
+            this.$router.push({name:"policyModuleAdd"})
        }
 
        edit(id:any){
-            this.$router.push({name:"userEdit",params:{id:id}})
+            this.$router.push({name:"policyModuleEdit",params:{id:id}})
        }
 
         del(id:any){
-            this.$confirm("是否确定要删除该用户","提示",{
+            this.$confirm("是否确定要删除该新闻","提示",{
                 showCancelButton:true
             }).then(()=>{
-                delUser(id).then(data=>{
+                delModule(id).then(data=>{
                     this.$message({
                         type:"success",
                         message:"删除成功"
                     })
-                    this.users=this.users.filter(item=>{
+                    this.modules=this.modules.filter(item=>{
                         if(item.id!=id){
                             return true
                         }
@@ -117,37 +109,25 @@
             })
         }
 
-        changeStatus(user){
-            editUserStatus(user.id,user.status).then(data=>{
-                console.log(data)
-            })
+        changeStatus(module){
+            updateModuleStatus(module.id,module.status)
         }
 
-        filterHandler(filters){
-            console.log(filters)
-            for(let filter in filters){
-                this.params[filter]=filters[filter][0]
-            }
-            this.listUsers(1)
-        }
-
-        listUsers(page=1){
-            this.params['page']=page
-            this.params['limit']=20
-            getUsers(this.params).then(data=>{
-                this.users=data.data.data
+        listPolicyModule(page=1){
+            listModule({page,limit:20}).then(data=>{
+                this.modules=data.data.data
                 this.total=data.data.total
                 this.pageSize=data.data.size
             })
         }
 
-       changePage(page){
-            this.listUsers(page)
-       }
+        changePage(page){
+            this.listPolicyModule(page)
+        }
 
-       mounted(){
-            this.listUsers(1)
-       }
+        mounted(){
+            this.listPolicyModule(1)
+        }
 
     }
 </script>

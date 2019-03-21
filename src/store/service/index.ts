@@ -1,5 +1,5 @@
 export default {
-    namespace:true,
+    namespaced:true,
     state:{
         serviceTypes: JSON.parse(localStorage.getItem("servicesTypes")) || []
     },

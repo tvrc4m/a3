@@ -86,7 +86,22 @@
                 group:"news",
                 icon:"menu",
                 submenus:[]
-            }
+            },
+            {
+                title:"政策速递",
+                icon:"menu",
+                group:"policy",
+                submenus:[
+                    {
+                        title:"模块",
+                        path:"/policy/module"
+                    },
+                    {
+                        title:"新闻",
+                        path:"/policy/news"
+                    }
+                ]
+            },
         ]
 
         @Provide() services=[]

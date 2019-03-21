@@ -34,6 +34,7 @@
     export default class UserIndex extends Vue{
 
        @Provide() users=[]
+       @Provide() params={}
        @Provide() total=0
        @Provide() pageSize=20
        @Provide() columns=[

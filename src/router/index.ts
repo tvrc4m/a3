@@ -41,6 +41,11 @@ const orderForm=()=>import('@/views/order/form')
 // 新闻
 const newsList=()=>import('@/views/news/index')
 const newsForm=()=>import('@/views/news/form')
+// 政策速递
+const policyNewsList=()=>import('@/views/policy/news/index')
+const policyNewsForm=()=>import('@/views/policy/news/form')
+const policyModuleList=()=>import('@/views/policy/module/index')
+const policyModuleForm=()=>import('@/views/policy/module/form')
 
 const routes = [
     {
@@ -336,6 +341,60 @@ const routes = [
                 component:newsForm,
                 meta:{
                     group:"news"
+                }
+            }
+        ]
+    },
+    {
+        path: '/policy',
+        component: LayoutBasic,
+        children: [
+            {
+                path:"news",
+                name:"policyNewsList",
+                component:policyNewsList,
+                meta:{
+                    group:"policy"
+                }
+            },
+            {
+                path:"news/add",
+                name:"policyNewsAdd",
+                component:policyNewsForm,
+                meta:{
+                    group:"policy"
+                }
+            },
+            {
+                path:"news/edit/:id",
+                name:"policyNewsEdit",
+                component:policyNewsForm,
+                meta:{
+                    group:"policy"
+                }
+            },
+            {
+                path:"module",
+                name:"policyModuleList",
+                component:policyModuleList,
+                meta:{
+                    group:"policy"
+                }
+            },
+            {
+                path:"module/add",
+                name:"policyModuleAdd",
+                component:policyModuleForm,
+                meta:{
+                    group:"policy"
+                }
+            },
+            {
+                path:"module/edit/:id",
+                name:"policyModuleEdit",
+                component:policyModuleForm,
+                meta:{
+                    group:"policy"
                 }
             }
         ]

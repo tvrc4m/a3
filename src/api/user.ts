@@ -3,7 +3,9 @@ import req from '@/utils/request'
 // 获取用户列表
 export function getUsers(params={}){
     console.log(params)
-    return req.get(process.env.API_URL+"/admin/user")
+    return req.get(process.env.API_URL+"/admin/user",{
+        params
+    })
 }
 
 // 获取用户详情
